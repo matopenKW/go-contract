@@ -23,4 +23,14 @@ contract HistoryContract {
         require(_index < histories[msg.sender].length, "Invalid index");
         return histories[msg.sender][_index];
     }
+
+    function getHistoryFromTimestamp(uint256 timestamp) public view returns (History memory) {
+        uint len = histories[msg.sender].length;
+        for (uint i = 0; i< len; i++){
+            if (histories[msg.sender][i].timestamp == timestamp) {
+                return histories[msg.sender][i];
+            }
+        }
+        return History(0, "");
+    }
 }

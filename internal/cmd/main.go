@@ -3,11 +3,14 @@ package main
 import (
 	"context"
 	"crypto/ecdsa"
+	"encoding/json"
 	"fmt"
+	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/matopenKW/go-contract/internal/pkg/history_contract"
 	"github.com/spf13/cobra"
 	"math/big"
 	"os"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -38,31 +41,44 @@ func main() {
 		Use: "go-contract",
 	}
 
-	var cmd1 = &cobra.Command{
-		Use: "store",
-		Run: func(cmd *cobra.Command, args []string) {
-			if err := store(); err != nil {
-				panic(err)
-			}
+	rootCmd.AddCommand(
+		&cobra.Command{
+			Use: "store",
+			Run: func(cmd *cobra.Command, args []string) {
+				if err := store(); err != nil {
+					panic(err)
+				}
+			},
 		},
-	}
-
-	var cmd2 = &cobra.Command{
-		Use: "get-history",
-		Run: func(cmd *cobra.Command, args []string) {
-			if err := getHistory(); err != nil {
-				panic(err)
-			}
+		&cobra.Command{
+			Use: "get-history",
+			Run: func(cmd *cobra.Command, args []string) {
+				if err := getHistory(); err != nil {
+					panic(err)
+				}
+			},
 		},
-	}
-
-	rootCmd.AddCommand(cmd1, cmd2)
+		&cobra.Command{
+			Use: "get-history-from-tx",
+			Run: func(cmd *cobra.Command, args []string) {
+				if err := getHistoryFromTx(args[0]); err != nil {
+					panic(err)
+				}
+			},
+		},
+	)
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
+}
+
+type Person struct {
+	ID      string `json:"id"`
+	Name    string `json:"name"`
+	Address string `json:"address"`
 }
 
 func store() error {
@@ -82,9 +98,20 @@ func store() error {
 		return err
 	}
 
-	if _, err := contract.StoreHistory(opt, "test data"); err != nil {
+	jsonData, err := json.Marshal(Person{
+		ID:      "1",
+		Name:    "test",
+		Address: "address test",
+	})
+	if err != nil {
 		return err
 	}
+
+	res, err := contract.StoreHistory(opt, string(jsonData))
+	if err != nil {
+		return err
+	}
+	fmt.Println("TxHash :", res.Hash().Hex())
 
 	fmt.Println("success")
 	return nil
@@ -110,6 +137,37 @@ func getHistory() error {
 	}
 	fmt.Println(res)
 
+	fmt.Println("success")
+	return nil
+}
+
+func getHistoryFromTx(txHash string) error {
+	ethCli, err := newEthCli(blockChainHost)
+	if err != nil {
+		return err
+	}
+
+	transaction, _, err := ethCli.TransactionByHash(context.Background(), common.HexToHash(txHash))
+	if err != nil {
+		return fmt.Errorf("failed to get transaction by hash: %v", err)
+	}
+
+	parsedABI, err := abi.JSON(strings.NewReader(history_contract.HistoryContractMetaData.ABI))
+	if err != nil {
+		return fmt.Errorf("failed to parse ABI: %v", err)
+	}
+
+	method, err := parsedABI.MethodById(transaction.Data())
+	if err != nil {
+		return fmt.Errorf("failed to get method by id: %v", err)
+	}
+
+	data := transaction.Data()
+	inputValues, err := method.Inputs.Unpack(data[4:])
+	if err != nil {
+		return fmt.Errorf("failed to unpack input values: %v", err)
+	}
+	fmt.Printf("Transaction: %v\n", inputValues)
 	fmt.Println("success")
 	return nil
 }

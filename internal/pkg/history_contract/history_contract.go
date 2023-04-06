@@ -36,7 +36,7 @@ type HistoryContractHistory struct {
 
 // HistoryContractMetaData contains all meta data concerning the HistoryContract contract.
 var HistoryContractMetaData = &bind.MetaData{
-	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"recordIndex\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"data\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"name\":\"DataStored\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_index\",\"type\":\"uint256\"}],\"name\":\"getHistory\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"data\",\"type\":\"string\"}],\"internalType\":\"structHistoryContract.History\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_data\",\"type\":\"string\"}],\"name\":\"storeHistory\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"recordIndex\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"data\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"name\":\"DataStored\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_index\",\"type\":\"uint256\"}],\"name\":\"getHistory\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"data\",\"type\":\"string\"}],\"internalType\":\"structHistoryContract.History\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"name\":\"getHistoryFromTimestamp\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"data\",\"type\":\"string\"}],\"internalType\":\"structHistoryContract.History\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_data\",\"type\":\"string\"}],\"name\":\"storeHistory\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // HistoryContractABI is the input ABI used to generate the binding from.
@@ -214,6 +214,37 @@ func (_HistoryContract *HistoryContractSession) GetHistory(_index *big.Int) (His
 // Solidity: function getHistory(uint256 _index) view returns((uint256,string))
 func (_HistoryContract *HistoryContractCallerSession) GetHistory(_index *big.Int) (HistoryContractHistory, error) {
 	return _HistoryContract.Contract.GetHistory(&_HistoryContract.CallOpts, _index)
+}
+
+// GetHistoryFromTimestamp is a free data retrieval call binding the contract method 0x7011a32f.
+//
+// Solidity: function getHistoryFromTimestamp(uint256 timestamp) view returns((uint256,string))
+func (_HistoryContract *HistoryContractCaller) GetHistoryFromTimestamp(opts *bind.CallOpts, timestamp *big.Int) (HistoryContractHistory, error) {
+	var out []interface{}
+	err := _HistoryContract.contract.Call(opts, &out, "getHistoryFromTimestamp", timestamp)
+
+	if err != nil {
+		return *new(HistoryContractHistory), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(HistoryContractHistory)).(*HistoryContractHistory)
+
+	return out0, err
+
+}
+
+// GetHistoryFromTimestamp is a free data retrieval call binding the contract method 0x7011a32f.
+//
+// Solidity: function getHistoryFromTimestamp(uint256 timestamp) view returns((uint256,string))
+func (_HistoryContract *HistoryContractSession) GetHistoryFromTimestamp(timestamp *big.Int) (HistoryContractHistory, error) {
+	return _HistoryContract.Contract.GetHistoryFromTimestamp(&_HistoryContract.CallOpts, timestamp)
+}
+
+// GetHistoryFromTimestamp is a free data retrieval call binding the contract method 0x7011a32f.
+//
+// Solidity: function getHistoryFromTimestamp(uint256 timestamp) view returns((uint256,string))
+func (_HistoryContract *HistoryContractCallerSession) GetHistoryFromTimestamp(timestamp *big.Int) (HistoryContractHistory, error) {
+	return _HistoryContract.Contract.GetHistoryFromTimestamp(&_HistoryContract.CallOpts, timestamp)
 }
 
 // StoreHistory is a paid mutator transaction binding the contract method 0x8e62c15e.
