@@ -50,11 +50,15 @@ func main() {
 	}
 	_ = opt
 
-	fmt.Println(contract.GetMessage(nil))
-
-	//if _, err := contract.SetMessage(opt, "Hello Smart Contract!"); err != nil {
+	//fmt.Println(contract.GetMessage(nil))
+	//
+	//transact, err := contract.SetMessage(opt, "Hello Smart Contract!")
+	//transact.Hash().Hex()
+	//if err != nil {
 	//	panic(err)
 	//}
+
+	ethCli.FilterLogs()
 
 	//fmt.Println(contract.GetMessage(nil))
 }
