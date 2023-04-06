@@ -4,6 +4,8 @@ import (
 	"context"
 	"crypto/ecdsa"
 	"fmt"
+	"github.com/matopenKW/go-contract/internal/pkg/history_contract"
+	"github.com/spf13/cobra"
 	"math/big"
 	"os"
 
@@ -11,7 +13,6 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/matopenKW/go-contract/internal/pkg/contract"
 )
 
 var (
@@ -21,7 +22,8 @@ var (
 )
 
 const (
-	chainID = 80001
+	chainID      = 80001
+	ownerAddress = "0x111b5dbd7f34ecf02a8857261a9dbb459a4b7fb2"
 )
 
 func init() {
@@ -31,36 +33,85 @@ func init() {
 }
 
 func main() {
-	ctx := context.Background()
 
+	var rootCmd = &cobra.Command{
+		Use: "go-contract",
+	}
+
+	var cmd1 = &cobra.Command{
+		Use: "store",
+		Run: func(cmd *cobra.Command, args []string) {
+			if err := store(); err != nil {
+				panic(err)
+			}
+		},
+	}
+
+	var cmd2 = &cobra.Command{
+		Use: "get-history",
+		Run: func(cmd *cobra.Command, args []string) {
+			if err := getHistory(); err != nil {
+				panic(err)
+			}
+		},
+	}
+
+	rootCmd.AddCommand(cmd1, cmd2)
+
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+}
+
+func store() error {
 	ethCli, err := newEthCli(blockChainHost)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	addr := common.HexToAddress(contractAddress)
-	contract, err := contract.NewContract(addr, ethCli)
+	contract, err := history_contract.NewHistoryContract(addr, ethCli)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	opt, err := newTransactOpts(ctx, ethCli)
+	opt, err := newTransactOpts(context.Background(), ethCli)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	_ = opt
 
-	//fmt.Println(contract.GetMessage(nil))
-	//
-	//transact, err := contract.SetMessage(opt, "Hello Smart Contract!")
-	//transact.Hash().Hex()
-	//if err != nil {
-	//	panic(err)
-	//}
+	if _, err := contract.StoreHistory(opt, "test data"); err != nil {
+		return err
+	}
 
-	ethCli.FilterLogs()
+	fmt.Println("success")
+	return nil
+}
 
-	//fmt.Println(contract.GetMessage(nil))
+func getHistory() error {
+	ethCli, err := newEthCli(blockChainHost)
+	if err != nil {
+		return err
+	}
+
+	addr := common.HexToAddress(contractAddress)
+	contract, err := history_contract.NewHistoryContract(addr, ethCli)
+	if err != nil {
+		return err
+	}
+
+	res, err := contract.GetHistory(&bind.CallOpts{
+		From: common.HexToAddress(ownerAddress),
+	}, big.NewInt(1))
+	if err != nil {
+		return err
+	}
+	fmt.Println(res)
+
+	fmt.Println("success")
+	return nil
 }
 
 func newTransactOpts(ctx context.Context, cli *ethclient.Client) (*bind.TransactOpts, error) {

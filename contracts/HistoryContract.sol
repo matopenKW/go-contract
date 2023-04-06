@@ -4,14 +4,14 @@ pragma solidity ^0.8.17;
 contract HistoryContract {
     struct History {
         uint256 timestamp;
-        bytes32 data;
+        string data;
     }
 
     mapping(address => History[]) private histories;
 
-    event DataStored(address indexed user, uint256 indexed recordIndex, bytes32 data, uint256 timestamp);
+    event DataStored(address indexed user, uint256 indexed recordIndex, string data, uint256 timestamp);
 
-    function storeData(bytes32 _data) public {
+    function storeHistory(string memory _data) public {
         History memory newHistory = History(block.timestamp, _data);
         histories[msg.sender].push(newHistory);
 
@@ -19,7 +19,7 @@ contract HistoryContract {
         emit DataStored(msg.sender, recordIndex, _data, block.timestamp);
     }
 
-    function getData(uint256 _index) public view returns (History memory) {
+    function getHistory(uint256 _index) public view returns (History memory) {
         require(_index < histories[msg.sender].length, "Invalid index");
         return histories[msg.sender][_index];
     }

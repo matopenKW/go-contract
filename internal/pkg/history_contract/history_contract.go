@@ -31,12 +31,12 @@ var (
 // HistoryContractHistory is an auto generated low-level Go binding around an user-defined struct.
 type HistoryContractHistory struct {
 	Timestamp *big.Int
-	Data      [32]byte
+	Data      string
 }
 
 // HistoryContractMetaData contains all meta data concerning the HistoryContract contract.
 var HistoryContractMetaData = &bind.MetaData{
-	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"recordIndex\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"data\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"name\":\"DataStored\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_index\",\"type\":\"uint256\"}],\"name\":\"getData\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"data\",\"type\":\"bytes32\"}],\"internalType\":\"structHistoryContract.History\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"_data\",\"type\":\"bytes32\"}],\"name\":\"storeData\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"recordIndex\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"data\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"name\":\"DataStored\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_index\",\"type\":\"uint256\"}],\"name\":\"getHistory\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"data\",\"type\":\"string\"}],\"internalType\":\"structHistoryContract.History\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_data\",\"type\":\"string\"}],\"name\":\"storeHistory\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // HistoryContractABI is the input ABI used to generate the binding from.
@@ -185,12 +185,12 @@ func (_HistoryContract *HistoryContractTransactorRaw) Transact(opts *bind.Transa
 	return _HistoryContract.Contract.contract.Transact(opts, method, params...)
 }
 
-// GetData is a free data retrieval call binding the contract method 0x0178fe3f.
+// GetHistory is a free data retrieval call binding the contract method 0xc8691b2a.
 //
-// Solidity: function getData(uint256 _index) view returns((uint256,bytes32))
-func (_HistoryContract *HistoryContractCaller) GetData(opts *bind.CallOpts, _index *big.Int) (HistoryContractHistory, error) {
+// Solidity: function getHistory(uint256 _index) view returns((uint256,string))
+func (_HistoryContract *HistoryContractCaller) GetHistory(opts *bind.CallOpts, _index *big.Int) (HistoryContractHistory, error) {
 	var out []interface{}
-	err := _HistoryContract.contract.Call(opts, &out, "getData", _index)
+	err := _HistoryContract.contract.Call(opts, &out, "getHistory", _index)
 
 	if err != nil {
 		return *new(HistoryContractHistory), err
@@ -202,39 +202,39 @@ func (_HistoryContract *HistoryContractCaller) GetData(opts *bind.CallOpts, _ind
 
 }
 
-// GetData is a free data retrieval call binding the contract method 0x0178fe3f.
+// GetHistory is a free data retrieval call binding the contract method 0xc8691b2a.
 //
-// Solidity: function getData(uint256 _index) view returns((uint256,bytes32))
-func (_HistoryContract *HistoryContractSession) GetData(_index *big.Int) (HistoryContractHistory, error) {
-	return _HistoryContract.Contract.GetData(&_HistoryContract.CallOpts, _index)
+// Solidity: function getHistory(uint256 _index) view returns((uint256,string))
+func (_HistoryContract *HistoryContractSession) GetHistory(_index *big.Int) (HistoryContractHistory, error) {
+	return _HistoryContract.Contract.GetHistory(&_HistoryContract.CallOpts, _index)
 }
 
-// GetData is a free data retrieval call binding the contract method 0x0178fe3f.
+// GetHistory is a free data retrieval call binding the contract method 0xc8691b2a.
 //
-// Solidity: function getData(uint256 _index) view returns((uint256,bytes32))
-func (_HistoryContract *HistoryContractCallerSession) GetData(_index *big.Int) (HistoryContractHistory, error) {
-	return _HistoryContract.Contract.GetData(&_HistoryContract.CallOpts, _index)
+// Solidity: function getHistory(uint256 _index) view returns((uint256,string))
+func (_HistoryContract *HistoryContractCallerSession) GetHistory(_index *big.Int) (HistoryContractHistory, error) {
+	return _HistoryContract.Contract.GetHistory(&_HistoryContract.CallOpts, _index)
 }
 
-// StoreData is a paid mutator transaction binding the contract method 0x3fc906c5.
+// StoreHistory is a paid mutator transaction binding the contract method 0x8e62c15e.
 //
-// Solidity: function storeData(bytes32 _data) returns()
-func (_HistoryContract *HistoryContractTransactor) StoreData(opts *bind.TransactOpts, _data [32]byte) (*types.Transaction, error) {
-	return _HistoryContract.contract.Transact(opts, "storeData", _data)
+// Solidity: function storeHistory(string _data) returns()
+func (_HistoryContract *HistoryContractTransactor) StoreHistory(opts *bind.TransactOpts, _data string) (*types.Transaction, error) {
+	return _HistoryContract.contract.Transact(opts, "storeHistory", _data)
 }
 
-// StoreData is a paid mutator transaction binding the contract method 0x3fc906c5.
+// StoreHistory is a paid mutator transaction binding the contract method 0x8e62c15e.
 //
-// Solidity: function storeData(bytes32 _data) returns()
-func (_HistoryContract *HistoryContractSession) StoreData(_data [32]byte) (*types.Transaction, error) {
-	return _HistoryContract.Contract.StoreData(&_HistoryContract.TransactOpts, _data)
+// Solidity: function storeHistory(string _data) returns()
+func (_HistoryContract *HistoryContractSession) StoreHistory(_data string) (*types.Transaction, error) {
+	return _HistoryContract.Contract.StoreHistory(&_HistoryContract.TransactOpts, _data)
 }
 
-// StoreData is a paid mutator transaction binding the contract method 0x3fc906c5.
+// StoreHistory is a paid mutator transaction binding the contract method 0x8e62c15e.
 //
-// Solidity: function storeData(bytes32 _data) returns()
-func (_HistoryContract *HistoryContractTransactorSession) StoreData(_data [32]byte) (*types.Transaction, error) {
-	return _HistoryContract.Contract.StoreData(&_HistoryContract.TransactOpts, _data)
+// Solidity: function storeHistory(string _data) returns()
+func (_HistoryContract *HistoryContractTransactorSession) StoreHistory(_data string) (*types.Transaction, error) {
+	return _HistoryContract.Contract.StoreHistory(&_HistoryContract.TransactOpts, _data)
 }
 
 // HistoryContractDataStoredIterator is returned from FilterDataStored and is used to iterate over the raw logs and unpacked data for DataStored events raised by the HistoryContract contract.
@@ -308,14 +308,14 @@ func (it *HistoryContractDataStoredIterator) Close() error {
 type HistoryContractDataStored struct {
 	User        common.Address
 	RecordIndex *big.Int
-	Data        [32]byte
+	Data        string
 	Timestamp   *big.Int
 	Raw         types.Log // Blockchain specific contextual infos
 }
 
-// FilterDataStored is a free log retrieval operation binding the contract event 0xcb5c0173ec1aa1ca5096d7dcb185ee453c0d56841672539c22346a8611cff6f1.
+// FilterDataStored is a free log retrieval operation binding the contract event 0x1a5d636e048af0d7ad0efcd9a61aa52155d71fb84138f4ed1c116a19fe796cdc.
 //
-// Solidity: event DataStored(address indexed user, uint256 indexed recordIndex, bytes32 data, uint256 timestamp)
+// Solidity: event DataStored(address indexed user, uint256 indexed recordIndex, string data, uint256 timestamp)
 func (_HistoryContract *HistoryContractFilterer) FilterDataStored(opts *bind.FilterOpts, user []common.Address, recordIndex []*big.Int) (*HistoryContractDataStoredIterator, error) {
 
 	var userRule []interface{}
@@ -334,9 +334,9 @@ func (_HistoryContract *HistoryContractFilterer) FilterDataStored(opts *bind.Fil
 	return &HistoryContractDataStoredIterator{contract: _HistoryContract.contract, event: "DataStored", logs: logs, sub: sub}, nil
 }
 
-// WatchDataStored is a free log subscription operation binding the contract event 0xcb5c0173ec1aa1ca5096d7dcb185ee453c0d56841672539c22346a8611cff6f1.
+// WatchDataStored is a free log subscription operation binding the contract event 0x1a5d636e048af0d7ad0efcd9a61aa52155d71fb84138f4ed1c116a19fe796cdc.
 //
-// Solidity: event DataStored(address indexed user, uint256 indexed recordIndex, bytes32 data, uint256 timestamp)
+// Solidity: event DataStored(address indexed user, uint256 indexed recordIndex, string data, uint256 timestamp)
 func (_HistoryContract *HistoryContractFilterer) WatchDataStored(opts *bind.WatchOpts, sink chan<- *HistoryContractDataStored, user []common.Address, recordIndex []*big.Int) (event.Subscription, error) {
 
 	var userRule []interface{}
@@ -380,9 +380,9 @@ func (_HistoryContract *HistoryContractFilterer) WatchDataStored(opts *bind.Watc
 	}), nil
 }
 
-// ParseDataStored is a log parse operation binding the contract event 0xcb5c0173ec1aa1ca5096d7dcb185ee453c0d56841672539c22346a8611cff6f1.
+// ParseDataStored is a log parse operation binding the contract event 0x1a5d636e048af0d7ad0efcd9a61aa52155d71fb84138f4ed1c116a19fe796cdc.
 //
-// Solidity: event DataStored(address indexed user, uint256 indexed recordIndex, bytes32 data, uint256 timestamp)
+// Solidity: event DataStored(address indexed user, uint256 indexed recordIndex, string data, uint256 timestamp)
 func (_HistoryContract *HistoryContractFilterer) ParseDataStored(log types.Log) (*HistoryContractDataStored, error) {
 	event := new(HistoryContractDataStored)
 	if err := _HistoryContract.contract.UnpackLog(event, "DataStored", log); err != nil {
